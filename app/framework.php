@@ -37,6 +37,46 @@ if(file_exists($controllerPath)){
 }
 
 
-function renderView($viewName){
-   require "views/$viewName.php";
+function getView(string $viewName,array $data){
+    // mise en cache de la sorte PHP
+    // le resultat ne sera pas immediatement envoyé
+    // dans une reponse 
+
+    ob_start();
+
+    // Transformation des clefs de $data en variables 
+    // $data["title"]=$title
+   extract($data);
+
+   require "../views/$viewName.php";
+
+
+   // recuperation de la memoire tampon dans une variable 
+   // le tampon est ensuite vidé
+
+   $html=ob_get_clean();
+
+
+   return $html;
+
+
+
+}
+
+
+function renderView(string $viewName, array $data){
+   // obtenir le resultat de la vue 
+
+   $content = getView($viewName,$data);
+
+   // ajouter le rendu de la vue aux données 
+   $data["content"]=$content;
+
+
+   // obtenir le resultat du layout et lui rajouter la $data qui possede $content
+   // obtenir une vue dans une autre vue 
+
+   $html=getView("layout",$data);
+
+   echo $html;
 }

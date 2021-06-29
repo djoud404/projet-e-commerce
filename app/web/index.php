@@ -7,7 +7,7 @@ ini_set("display_errors",1);
 // import des bibliotheque 
 require "../framework.php";
 
-$path = filter_input(INPUT_GET, "path", FILTER_SANITIZE_URL) ?? "";
+$path = filter_input(INPUT_GET, "path", FILTER_SANITIZE_URL) ?? "home";
 
 // table de routage 
 // qui fait correspondre un URL et un nom de fichier
