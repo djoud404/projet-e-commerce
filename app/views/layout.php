@@ -17,7 +17,12 @@
     <!-- fin de navigation -->
     <div class="row justify-content-center">
 
-        <div class="col-md-8 p-2 bg-success text-white">
+        <div class="col-md-9 p-2 mt-4">
+        <?php if(hasFalshMessage()) : ?>
+         <div class="alert alert-warning mt-2 mb-2">
+         <?= getFalshMessage() ?>
+         </div>
+        <?php endif ?>
             <?= $content ?>
         </div>
     </div>

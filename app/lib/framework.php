@@ -85,3 +85,23 @@ function renderView(string $viewName, array $data){
 function isPosted(){
    return count($_POST)>0;
 }
+
+
+function setFalshMessage(string $message){
+   $_SESSION["message"]=$message;
+}
+
+// si la clef message existe 
+function hasFalshMessage(): bool{
+   return isset($_SESSION["message"]);
+}
+
+function getFalshMessage(): string{
+
+// recuperer le message en session et le stocker
+   $message=$_SESSION["message"] ?? "";
+    // supression du message dans la session
+   unset($_SESSION["message"]);
+   // retour du message sauvegardé dans une variable
+   return $message;
+}

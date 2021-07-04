@@ -9,6 +9,26 @@ $erreurs = [];
 //initaliser les elements a poster à un tableau vide 
 $inputs = [];
 
+
+// recuperer le paramtre l'id dans l'URL poour la modification
+$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+// si l'id existe on va recuprerer les données dans la fonction getOneArticleById() pour modifier les données dans 
+// add-article.php 
+
+if (!empty($id)) {
+
+    try {
+        $inputs=getOneArticleById($id);
+        //var_dump($inputs);
+    } catch (Exception $err) {
+        $erreurs[] = $err->getMessage();
+    }
+}
+
+/***************
+ * TRAITEMENT DU FORMULAIRE D INSERTION
+ */
+
 if (isPosted()) {
 
     $inputs = filter_input_array(INPUT_POST, [
@@ -21,53 +41,31 @@ if (isPosted()) {
         "id_categorie" => FILTER_SANITIZE_NUMBER_INT
 
     ]);
-
-    if (empty($inputs["nom_article"])) {
-        $erreurs[] = "veuillez saisir le nom de l'article";
-    }
-
-    if (empty($inputs["marque_article"])) {
-        $erreurs[] = "veuillez saisir la marque de l'article";
-    }
-
-    if (empty($inputs["type_article"])) {
-        $erreurs[] = "veuillez saisir le type de l'article";
-    }
-
-    if (empty($inputs["taille_article"])) {
-        $erreurs[] = "veuillez saisir la taille de l'article";
-    }
-
-
-    if (empty($inputs["id_categorie"])) {
-        $erreurs[] = "veuillez saisir la categorie de l'article";
-    }
-
-
-
-   
+     
+    if(empty($id)){
+        //si l'id n'existe pas est vide on fait l insertion
+         $erreurs = insertArticle($inputs);
     // si l'insertion est ok alors redirection
+    } else {
+        // si l'id existe ,on rajoute cet id aux données du tableau
+        // pour la fonction updateArticle
+        $inputs["id_article"]= $id;
+        $erreurs=updateArticle($inputs);
+    }
+   
 
-    if(count($erreurs)==0){
-        // si insertion dans la BD
-    $erreurs = insertArticle($inputs);
+    if (count($erreurs) == 0) {
+
         header("location:/list-article");
         exit;
     }
-
-
-
 }
-
-
-
-
 
 
 
 
 renderView("add-article", [
     "categorieList" => getAllCategorie(),
-    "erreursList"=>$erreurs,
-    "inputs"=>$inputs
+    "erreursList" => $erreurs,
+    "inputs" =>  $inputs
 ]);
