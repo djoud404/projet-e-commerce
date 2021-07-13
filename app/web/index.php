@@ -1,13 +1,13 @@
 <?php
+// demarrer la session 
+session_start();
+
 
 // Affichage du details des erreurs
 error_reporting(E_ALL);
 ini_set("display_errors",1); 
 
-// Definition de la configuration de l'application
-define("DSN","mysql:host=mysql-djoud.alwaysdata.net; port=3306; dbname=djoud_projet_ecommerce; charset=utf8");
-define("DB_USER","djoud");
-define("DB_PASS","0553683253nass");
+
 
 // import des bibliotheque 
 require "../lib/framework.php";
@@ -22,7 +22,16 @@ $routes=[
     "contact"=>"contact-controller",
     "list-article"=>"list-article-controller",
     "search-article"=>"article-search-controller",
-    "add-article" => "add-article-controller"
+    "add-article" => "add-article-controller",
+    "add-category" => "add-category-controller",
+    "delete-article" => "delete-article-controller",
+    "details-article" => "details-article-controller",
+    "list-order" => "list-order-controller",
+    "add-order" => "add-order-controller",
+    "register-client" =>"register-client-controller",
+    "login"=>"login-client-controller",
+    "logout"=>"logout-client-controller"
+
 ];
 
 // execution de routage 
